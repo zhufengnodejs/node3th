@@ -16,6 +16,7 @@ obj.say=function(str){
 //1.exports 这个对象将模块中的方法暴露给其他模块
 //2 module.exports  这个对象将模块中的方法暴露给其他模块
 //exports=obj;
+
 module.exports=obj;
 
 

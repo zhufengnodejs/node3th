@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的首页</title>
+    <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<table class="table table-striped" >
+
+    <thead>
+        <tr>
+            <td>id</td>
+            <td>名字</td>
+            <td>年龄</td>
+            <td>性别</td>
+        </tr>
+    </thead>
+
+    <tbody id="userList">
+
+    </tbody>
+
+
+
+    <nav>
+        <ul class="pagination">
+
+            <li><a href="javascript:getlist(1,4);">1</a></li>
+            <li><a href="javascript:getlist(2,4);">2</a></li>
+            <li><a href="javascript:getlist(3,4);">3</a></li>
+            <li><a href="javascript:getlist(4,4);">4</a></li>
+            <li><a href="javascript:getlist(5,4);">5</a></li>
+            <li>
+
+            </li>
+        </ul>
+    </nav>
+
+
+</table>
+<script>
+
+    function getlist(page,size) {
+        var xhr = new XMLHttpRequest();
+        var url="getList?page="+page+"&Pagesize="+size;
+        xhr.open("GET",url , true);
+        //打开异步对象
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(result);
+               var result= JSON.parse(xhr.responseText);
+                console.log(result);
+                if(result.success=="ok")
+                {
+                    var str="";
+                    for(var i=0;i<result.result.length;i++){
+
+                        str+="<tr>"
+                        str+="<td>"+result.result[i].id+"</td>"
+                        str+="<td>"+result.result[i].name+"</td>"
+                        str+="<td>"+result.result[i].age+"</td>"
+                        str+="<td>"+result.result[i].sex+"</td>"
+                        str+="</tr>"
+
+                    }
+                    document.querySelector("#userList").innerHTML=str;
+
+
+                }
+                else if(result.success=="no")
+                {
+                    document.querySelector("#userList").innerHTML="";
+                    document.querySelector("#userList").innerHTML="<tr><td colspan='4'>没有数据</td></tr> "
+                }
+
+            }
+
+        }
+        xhr.send();
+    }
+
+    getlist();
+</script>
+
+</body>
+</html>

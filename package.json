@@ -1,15 +1,22 @@
 {
-  "name": "node3",
+  "name": "node",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "mime": "^1.3.4"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhufengnodejs/node3th.git"
+  },
   "author": "",
-  "license": "MIT"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhufengnodejs/node3th/issues"
+  },
+  "homepage": "https://github.com/zhufengnodejs/node3th#readme",
+  "dependencies": {
+    "mime": "^1.3.4"
+  }
 }
