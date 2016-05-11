@@ -48,7 +48,10 @@ var server = http.createServer(function (req, res) {
             else{
                 //将数据转换成对象
                 var obj=JSON.parse(data.toString())
-                console.log(obj.result.length,start,end);
+                //console.log(obj.result.length,start,end);
+                //判断数据量是否够 当前查询的数据条数大于等于开始条数
+                //如果大于等于那就证明数据够 去集合中截取数据
+                //如果小于那么说明数据不够  不用去集合中截取数据
                 if(obj.result.length>=start){
                     //根据查询条件返回对应的结果
                     obj.result=obj.result.slice(start,end);
@@ -63,7 +66,7 @@ var server = http.createServer(function (req, res) {
                     var temobj={};
                     temobj.success="no";
                     temobj.error="没有数据了！";
-                    console.log(JSON.stringify(temobj));
+                    //console.log(JSON.stringify(temobj));
                     res.end(JSON.stringify(temobj));
                 }
 

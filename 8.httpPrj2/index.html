@@ -61,9 +61,9 @@
         //打开异步对象
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                console.log(result);
+                //console.log(result);
                 var result = JSON.parse(xhr.responseText);
-                console.log(result);
+                //console.log(result);
                 if (result.success == "ok") {
                     var str = "";
                     for (var i = 0; i < result.result.length; i++) {
