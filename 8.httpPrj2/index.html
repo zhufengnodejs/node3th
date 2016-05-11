@@ -82,7 +82,7 @@
 
                 }
                 else if (result.success == "no") {
-                    document.querySelector("#userList").innerHTML = "<tr><td colspan='5'>" + result.error + "</td></tr> "
+                    document.querySelector("#userList").innerHTML = "<tr><td colspan='5'>" + result.error + "</td></tr> ";
                 }
 
             }
@@ -93,18 +93,49 @@
 
     getlist();
 
-
-    function update(id) {
-        console.log(id);
+    //修改方法
+    function update(id){
+        alert(id);
     }
-    function delUser(id) {
+    //删除方法
+    function delUser(id){
+        console.log
+        var xhr = new XMLHttpRequest();
+        var url = "delete?id="+id;
+        xhr.open("GET", url, true);
+        //打开异步对象
+        xhr.onreadystatechange =function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                console.log(xhr.responseText)
+                var result = JSON.parse(xhr.responseText);
+                //如果后台 删除成功。前台也做对应的更新
+                if(result.success=="ok"){
+                    //获取要删除的对象
+                    var current=document.getElementById("user_"+id);
+                    current.parentNode.removeChild(current);
+                }
+                else(result.success=="no")
+                {
+                    alert("删除失败!错误原因是："+result.error)
+                }
 
-        var str = "user_" + id;
-        var oTr = document.getElementById(str);
-        oTr.parentNode.removeChild(oTr)
-
-
+            }
+        }
+        xhr.send();
     }
+
+
+//    function update(id) {
+//        console.log(id);
+//    }
+//    function delUser(id) {
+//
+//        var str = "user_" + id;
+//        var oTr = document.getElementById(str);
+//        oTr.parentNode.removeChild(oTr)
+//
+//
+//    }
 </script>
 
 </body>
