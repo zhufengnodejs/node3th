@@ -209,16 +209,21 @@
         //打开异步对象
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                console.log(xhr.responseText)
+                console.log("删除："+xhr.responseText)
                 var result = JSON.parse(xhr.responseText);
                 //如果后台 删除成功。前台也做对应的更新
-                if (result.success == "ok") {
+                //success
+//                console.log(result.success,"ok");
+//                console.log(result.success=="ok");
+                if(result.success=="ok") {
+                    console.log("ok")
                     //获取要删除的对象
                     var current = document.getElementById("user_" + id);
                     current.parentNode.removeChild(current);
                 }
-                else(result.success == "no")
+                else
                 {
+                    console.log("no")
                     alert("删除失败!错误原因是：" + result.error)
                 }
 

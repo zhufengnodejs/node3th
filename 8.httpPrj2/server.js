@@ -169,7 +169,6 @@ var server = http.createServer(function (req, res) {
                 //获取当前用户
                 var current=obj.result[i];
                 if(current.id==m_user.id){
-                    console.log("sdf"+m_user.id);
                     //找到对应的数据后并进行修改
                     current.name=m_user.name;
                     current.age=m_user.age;
