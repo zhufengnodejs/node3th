@@ -110,6 +110,25 @@ var server = http.createServer(function (req, res) {
 
 
     }
+    else if(urlObjct.pathname=="/update")
+    {
+        //console.log(update);
+        //var postStr="";
+        var buf1=[];
+        req.on("data",function(data){
+            buf1.push(data);
+            //console.log(data);
+            //console.log(data.toString());
+            //console.log("shujushi:"+chunck.toString())
+            //postStr+=chunck.toString();
+        })
+        req.on("end",function(){
+            console.log(Buffer.concat(buf1).toString());
+        })
+    }
+    else if(urlObjct.pathname=="/getUserById"){
+
+    }
 
 })
 
