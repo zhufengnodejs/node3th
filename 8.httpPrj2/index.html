@@ -72,7 +72,7 @@
                     </div>
                     <div class="form-group">
                         <label for="user_age" class="col-sm-2 control-label">年龄</label>
-
+                        <input type="hidden" id="user_id">
                         <div class="col-sm-8">
                             <input type="input" class="form-control" id="user_age">
                         </div>
@@ -80,7 +80,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-8 col-sm-4">
-                            <button type="btn btn-primary" class="btn btn-default">修改</button>
+                            <button type="button" class="btn btn-default" onclick="postUpdate()">修改</button>
                             <button type="button" class="btn btn-default" onclick="esc()">取消</button>
                         </div>
 
@@ -96,6 +96,35 @@
 <script src="//cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
+
+
+    //更新用户数据数据
+    function postUpdate(){
+        var xhr = new XMLHttpRequest();
+        var url = "update";
+        xhr.open("POST", url, true);
+        //打开异步对象
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText)
+                var result = JSON.parse(xhr.responseText);
+                if (result.success == "ok") {
+                    window.location.href="/";
+
+                }
+                else if(result.success == "no"){
+                    alert("修改失败！错误原因："+result.error);
+                    $('#updateUser').modal('hide');
+                }
+            }
+        }
+        var obj={};
+        obj.id=$("#user_id").val();
+        obj.name= $("#user_name").val();
+        obj.age=$("#user_age").val();
+        xhr.send(JSON.stringify(obj));
+
+    }
 
     //关闭模态对话框
     function esc(){
@@ -121,8 +150,7 @@
                         str += "<td>" + result.result[i].name + "</td>"
                         str += "<td>" + result.result[i].age + "</td>"
                         str += "<td>" + result.result[i].sex + "</td>"
-                        str += "<td><a href='javascript:update(" + result.result[i].id + ");'>修改</a> <a href='javascript:delUser(" + result.result[i
-                                        ].id + ");'>删除</a></td>"
+                        str += "<td><a href='javascript:update(" + result.result[i].id + ");'>修改</a> <a href='javascript:delUser(" + result.result[i].id + ");'>删除</a></td>"
                         str += "</tr>"
 
                     }
@@ -144,7 +172,7 @@
 
     //修改方法
     function update(id) {
-        $('#updateUser').modal('show');
+
         var xhr = new XMLHttpRequest();
         var url = "getUserById?id="+id;
         xhr.open("POST", url, true);
@@ -152,6 +180,21 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log(xhr.responseText)
+                var result = JSON.parse(xhr.responseText);
+                //如果后台 删除成功。前台也做对应的更新
+                if(result.success=="ok")
+                {
+                    //document.getElementById("user_name");
+                    $("#user_name").val(result.result.name);
+                    $("#user_age").val(result.result.age);
+                    $("#user_id").val(result.result.id);
+
+                    $('#updateUser').modal('show');
+                }
+                else{
+                    alert("操作失败,失败原因："+result.error)
+                }
+
             }
         }
 
@@ -159,7 +202,7 @@
     }
     //删除方法
     function delUser(id) {
-        console.log
+
         var xhr = new XMLHttpRequest();
         var url = "delete?id=" + id;
         xhr.open("GET", url, true);

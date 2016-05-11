@@ -110,23 +110,96 @@ var server = http.createServer(function (req, res) {
 
 
     }
+    //根据id获取用户信息
+    else if(urlObjct.pathname=="/getUserById"){
+        //获取要删除的id
+        var id= urlObjct.query.id;
+        //读取数据
+        var obj=JSON.parse(fs.readFileSync("./1.txt","utf8"));
+        //循环每一条数据  查找id对应的数据
+        //查找出了的结果返回结果
+        var current={};
+        //表示是否找到id对应的用户
+        var flag=false;
+        for(var i=0;i<obj.result.length;i++){
+            //获取当前用户
+            current=obj.result[i];
+            if(current.id==id){
+                flag=true;
+                current=current;
+                break;
+            }
+            else{
+                current=null;
+            }
+        }
+        //根据不同的表示给客户端返回不同的数据
+        //如果 flag=false 说明没有找到数据
+        //如果 flag=ture 说明找到数据
+        if(flag)
+        {
+            var obj={}
+            obj.success="ok";
+            obj.result=current;
+            res.end(JSON.stringify(obj));
+        }
+        else{
+            var obj={}
+            obj.success="no";
+            obj.error="没有找到对应的数据！"
+            res.end(JSON.stringify(obj));
+        }
+    }
+    //更新用户的路由  接受客户端post传过来的数据
     else if(urlObjct.pathname=="/update")
     {
-        //console.log(update);
-        //var postStr="";
-        var buf1=[];
+        var bufs=[];
         req.on("data",function(data){
-            buf1.push(data);
-            //console.log(data);
-            //console.log(data.toString());
-            //console.log("shujushi:"+chunck.toString())
-            //postStr+=chunck.toString();
+            bufs.push(data);
         })
         req.on("end",function(){
-            console.log(Buffer.concat(buf1).toString());
+
+            var m_user=JSON.parse(Buffer.concat(bufs).toString());
+            //console.log(fs.readFileSync("./1.txt").toString());
+            var obj=JSON.parse(fs.readFileSync("./1.txt"));
+            //循环每一条数据  查找id对应的数据
+            //表示是否找到id对应的用户
+            var flag=false;
+            for(var i=0;i<obj.result.length;i++){
+                //获取当前用户
+                var current=obj.result[i];
+                if(current.id==m_user.id){
+                    console.log("sdf"+m_user.id);
+                    //找到对应的数据后并进行修改
+                    current.name=m_user.name;
+                    current.age=m_user.age;
+                    flag=true;
+                    break;
+                }
+                else{
+                    current=null;
+                }
+            }
+            //根据不同的表示给客户端返回不同的数据
+            //如果 flag=false 说明没有找到数据
+            //如果 flag=ture 说明找到数据
+            if(flag)
+            {
+                fs.writeFileSync('./1.txt',JSON.stringify(obj))
+                var obj={}
+                obj.success="ok";
+                console.log(JSON.stringify(obj));
+                res.end(JSON.stringify(obj));
+            }
+            else{
+
+                var obj={}
+                obj.success="no";
+                obj.error="没有找到对应的数据！"
+                console.log(JSON.stringify(obj));
+                res.end(JSON.stringify(obj));
+            }
         })
-    }
-    else if(urlObjct.pathname=="/getUserById"){
 
     }
 
